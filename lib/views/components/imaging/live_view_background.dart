@@ -12,12 +12,10 @@ import 'package:momento_booth/views/photo_booth_screen/screens/photo_details_scr
 
 class LiveViewBackground extends StatefulWidget {
 
-  final GoRouter router;
   final Widget child;
 
   const LiveViewBackground({
     super.key,
-    required this.router,
     required this.child,
   });
 
@@ -28,7 +26,7 @@ class LiveViewBackground extends StatefulWidget {
 
 class _LiveViewBackgroundState extends State<LiveViewBackground> {
 
-  bool get _showLiveViewBackground => getIt<PhotosManager>().showLiveViewBackground && (widget.router.currentLocation != GalleryScreen.defaultRoute && !widget.router.currentLocation.startsWith('${PhotoDetailsScreen.defaultRoute}/'));
+  bool get _showLiveViewBackground => getIt<PhotosManager>().showLiveViewBackground && (GoRouter.of(context).currentLocation != GalleryScreen.defaultRoute && !GoRouter.of(context).currentLocation.startsWith('${PhotoDetailsScreen.defaultRoute}/'));
 
   BackgroundBlur get _backgroundBlur => getIt<SettingsManager>().settings.ui.backgroundBlur;
 
@@ -37,7 +35,7 @@ class _LiveViewBackgroundState extends State<LiveViewBackground> {
   @override
   void initState() {
     super.initState();
-    widget.router.routerDelegate.addListener(_routerListener);
+    GoRouter.of(context).routerDelegate.addListener(_routerListener);
   }
 
   void _routerListener() => WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
@@ -134,7 +132,7 @@ class _LiveViewBackgroundState extends State<LiveViewBackground> {
 
   @override
   void dispose() {
-    widget.router.routerDelegate.removeListener(_routerListener);
+    GoRouter.of(context).routerDelegate.removeListener(_routerListener);
     super.dispose();
   }
 
